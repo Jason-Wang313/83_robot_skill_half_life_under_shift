@@ -1,8 +1,16 @@
-observed_only_wam nominal success=0.532 tail_risk=0.468
-observed_only_wam hidden_mode_shift success=0.168 tail_risk=0.833
-augmentation_as_data_wam nominal success=0.613 tail_risk=0.387
-augmentation_as_data_wam hidden_mode_shift success=0.240 tail_risk=0.760
-scalar_uncertainty_wam nominal success=0.647 tail_risk=0.353
-scalar_uncertainty_wam hidden_mode_shift success=0.378 tail_risk=0.623
-proposed_branch_mechanism nominal success=0.762 tail_risk=0.238
-proposed_branch_mechanism hidden_mode_shift success=0.545 tail_risk=0.455
+Submission-hardening experiment for paper 83 robot_skill_half_life_under_shift
+Seven seeds, 600 episodes per seed, strong baselines, ablations, stress sweep, and negative cases.
+observed_only_behavior_clone hidden_mode_shift mean_success=0.4148 ci95=0.0189 tail=0.5852
+observed_only_behavior_clone combined_stress mean_success=0.3267 ci95=0.0142 tail=0.6733
+data_augmentation_wam hidden_mode_shift mean_success=0.4979 ci95=0.0174 tail=0.5021
+data_augmentation_wam combined_stress mean_success=0.4288 ci95=0.0135 tail=0.5712
+scalar_uncertainty_planner hidden_mode_shift mean_success=0.5583 ci95=0.0140 tail=0.4417
+scalar_uncertainty_planner combined_stress mean_success=0.5179 ci95=0.0177 tail=0.4821
+ensemble_disagreement_planner hidden_mode_shift mean_success=0.5929 ci95=0.0178 tail=0.4071
+ensemble_disagreement_planner combined_stress mean_success=0.5371 ci95=0.0154 tail=0.4629
+conformal_risk_filter hidden_mode_shift mean_success=0.6155 ci95=0.0167 tail=0.3845
+conformal_risk_filter combined_stress mean_success=0.5750 ci95=0.0138 tail=0.4250
+proposed_branch_mechanism hidden_mode_shift mean_success=0.6879 ci95=0.0122 tail=0.3121
+proposed_branch_mechanism combined_stress mean_success=0.6543 ci95=0.0150 tail=0.3457
+oracle_branch_upper_bound hidden_mode_shift mean_success=0.7660 ci95=0.0076 tail=0.2340
+oracle_branch_upper_bound combined_stress mean_success=0.7414 ci95=0.0092 tail=0.2586
