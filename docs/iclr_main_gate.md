@@ -2,18 +2,18 @@
 
 Paper: 83 robot_skill_half_life_under_shift
 
-Existing v2 decision: KILL_ARCHIVE
+Existing v3 decision: KILL_ARCHIVE
 
 Gate verdict: KILL_ARCHIVE
 
-Evidence digest: 433cb8c16561d5f3
+Evidence digest: v4-skill-survival-negative
 
 Fatal blockers:
-- Synthetic-only evidence.
-- Template-generated experiment and writing.
+- Local-only skill-survival evidence.
+- Half-life scheduler does not decisively beat conformal risk gating.
+- Minus-per-skill-survival ablation improves over the full mechanism.
 - No real robot or high-fidelity benchmark.
-- No trained WAM/model checkpoint.
-- No implemented real baselines.
+- No learned survival model from deployed robot data.
 - No manual exhaustive related-work synthesis.
 
 The only honest main-conference-safe decision is to archive rather than overclaim.

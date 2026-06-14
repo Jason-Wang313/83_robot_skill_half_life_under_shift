@@ -1,6 +1,8 @@
-ablation,combined_stress_mean_success,ci95_success,interpretation
-full_proposed_branch_mechanism,0.6745,0.0183,all components
-minus_branch_atlas,0.5657,0.0073,removes explicit unrealized futures
-minus_tail_risk_objective,0.5714,0.0067,uses mean predicted value only
-minus_diagnostic_probe,0.6071,0.0100,does not actively test ambiguous physical modes
-minus_failure_memory,0.6121,0.0159,does not reuse repaired beliefs
+split,ablation,goal_success,ci95_success,success_auc,unsafe_failure,refresh_rate,probe_rate,half_life_error,total_cost
+combined_micro_shift,full_skill_half_life_scheduler,0.79712,0.01168,0.79642,0.00347,0.15427,0.51637,0.17594,1.07921
+combined_micro_shift,minus_per_skill_survival,0.80456,0.01799,0.80438,0.00347,0.16816,0.52133,0.13417,1.08316
+combined_micro_shift,minus_probe_updates,0.78423,0.01596,0.78397,0.00496,0.16071,0.00000,0.23005,1.04600
+combined_micro_shift,minus_hazard_margin,0.75050,0.00990,0.75062,0.00397,0.08780,0.68353,0.26089,1.07405
+combined_micro_shift,minus_shift_decomposition,0.77431,0.01514,0.77377,0.00297,0.15080,0.52629,0.16988,1.07857
+combined_micro_shift,fixed_global_half_life,0.72420,0.01499,0.72424,0.00942,0.08731,0.64782,0.50686,1.07606
+combined_micro_shift,threshold_only_risk_gate,0.74256,0.02245,0.74241,0.00595,0.09623,0.29663,0.20498,1.05084

@@ -4,42 +4,153 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
-\title{Robot Skill Half-Life Under Shift: ICLR Main-Conference Gate Archive}
+\usepackage{graphicx}
+
+\graphicspath{{../figures/}}
+
+\title{Robot Skill Half-Life Under Shift:\\A Negative ICLR-Main Evidence Audit}
 \author{Anonymous Authors}
+
 \begin{document}
 \maketitle
+
 \begin{abstract}
-This document is not an ICLR main-conference submission. It is the v3 main-conference gate for a generated robotics draft about continual robot learning. The original research bet was: Quantify how quickly skills decay under small physical environment shifts. After a stricter hostile review, the honest terminal decision is \textbf{KILL/ARCHIVE}. Submission-hardening version: v3.
+Robot skills often fail gradually rather than catastrophically: a manipulation policy that worked yesterday may degrade as friction, payload mass, compliance, sensing, or contact mode changes by a small amount. The tested hypothesis is that each skill has a measurable \emph{deployment half-life} under physical shift, and that estimating per-skill survival curves should improve decisions about execution, probing, refresh, or abstention. We implemented a deterministic local skill-survival benchmark with four skills, five physical-shift splits, eight methods, seven seeds, 80,640 main rollouts, 14,112 ablation rollouts, and 201,600 stress rollouts. The result is useful but negative for ICLR main. On the combined micro-shift split, the proposed skill half-life scheduler obtains 0.8006 goal success and 0.0010 unsafe failure, but a conformal risk gate obtains 0.7981 goal success and 0.0040 unsafe failure. The paired goal-success difference is only 0.0025 with a 95\% interval of 0.0272. More importantly, the ablation that removes per-skill survival modeling improves success to 0.8046. We therefore mark this paper \textbf{KILL/ARCHIVE}: the idea is plausible, but the current evidence does not support a positive main-conference claim.
 \end{abstract}
 
-\section{Gate Decision}
-The v2 paper was workshop-only. Under the active ICLR-main standard, that is insufficient. The local artifacts contain synthetic multi-seed diagnostics, but no real-robot validation, high-fidelity simulator benchmark, trained world-action model, implemented real baselines, or manual full-paper related-work synthesis. These missing items are not recoverable by editing text or rerunning the synthetic script.
+\section{Terminal Decision}
+\textbf{Decision: KILL/ARCHIVE for ICLR main.} The repository now contains a paper-specific benchmark, baselines, ablations, stress tests, figures, and reproducibility files. The result still fails the submission gate because the proposed method is statistically indistinguishable from a strong conformal gate, and a central ablation improves over the full mechanism. This should be archived as a negative result rather than polished into an overstated submission.
 
-\section{Fatal ICLR-Main Blockers}
+\section{Problem}
+The intended claim was:
+\begin{quote}
+Quantify how quickly robot skills decay under small physical environment shifts.
+\end{quote}
+This is a meaningful robotics question. A frozen policy can become stale as contact mechanics drift, while a conservative safety gate can avoid damage but reduce task throughput. A useful half-life model would estimate when a deployed skill is likely to cross a practical survival threshold and would trigger refresh or probing before unsafe failures accumulate.
+
+\section{Benchmark}
+The v4 benchmark evaluates four skills: pick-and-place, door pull, drawer slide, and peg insertion. Each skill has a latent physical half-life that shortens under friction, payload, compliance, sensor-noise, and hidden contact-mode shifts. The five splits are:
 \begin{itemize}
-\item Evidence is synthetic and generated from a shared batch template.
-\item Baselines are diagnostic probability models, not implemented competing robot systems.
-\item Ablations do not correspond to a trained model checkpoint.
-\item No hardware, high-fidelity benchmark, qualitative rollouts, or failure videos are available.
-\item Related work is based on pool slices and hostile metadata, not a manual full-paper synthesis.
-\item Claims would be misleading if framed as ICLR-main empirical robotics evidence.
+\item \textbf{nominal slow drift}
+\item \textbf{friction shift}
+\item \textbf{payload mass shift}
+\item \textbf{compliance shift}
+\item \textbf{combined micro-shift}
+\end{itemize}
+For each method, skill, split, and seed, the benchmark simulates sequential deployment steps. Methods decide whether to execute, probe, refresh, or abstain. Rollouts report goal success, unsafe failure, stale execution, refresh/probe rates, cost, calibration error, and half-life estimation error. The benchmark is deterministic from source code, but it is local and synthetic; it is not a real robot benchmark.
+
+\section{Methods}
+We compare the proposed scheduler against seven alternatives:
+\begin{itemize}
+\item \textbf{Frozen behavior clone:} executes without adaptation.
+\item \textbf{Domain-randomized clone:} trades nominal skill for slower decay.
+\item \textbf{Fixed-interval refresh:} refreshes on a fixed deployment cadence.
+\item \textbf{Online fine-tuning:} adapts from recent outcomes but can chase hidden mode noise.
+\item \textbf{Scalar uncertainty gate:} refreshes when scalar uncertainty is high.
+\item \textbf{Conformal risk gate:} uses conservative risk thresholds to refresh or abstain.
+\item \textbf{Skill half-life scheduler:} estimates physical survival curves and triggers probe/refresh actions.
+\item \textbf{Oracle shift-aware scheduler:} uses the hidden half-life as an upper bound.
 \end{itemize}
 
-\section{Hostile Prior-Work Pressure}
-The closest local hostile records include:
+\section{Main Results}
+Table~\ref{tab:main} gives the combined micro-shift split. The half-life scheduler clearly beats frozen, domain-randomized, fixed-refresh, online-fine-tuning, and scalar-uncertainty baselines. That is the useful part of the archive. It does not, however, produce a decisive gain over conformal risk gating.
+
+\begin{table}[h]
+\centering
+\caption{Combined micro-shift results over seven seeds. Confidence intervals are 95\% intervals over seed means.}
+\label{tab:main}
+\begin{tabular}{lrrrr}
+\toprule
+Method & Goal success & Success AUC & Unsafe failure & Half-life error \\
+\midrule
+Frozen behavior clone & $0.345 \pm 0.023$ & $0.344$ & $0.430$ & $1.209$ \\
+Domain-randomized clone & $0.365 \pm 0.016$ & $0.364$ & $0.399$ & $0.678$ \\
+Fixed-interval refresh & $0.613 \pm 0.032$ & $0.613$ & $0.052$ & $0.507$ \\
+Online fine-tuning & $0.511 \pm 0.032$ & $0.511$ & $0.165$ & $0.298$ \\
+Scalar uncertainty gate & $0.734 \pm 0.022$ & $0.733$ & $0.014$ & $0.153$ \\
+Conformal risk gate & $0.798 \pm 0.020$ & $0.798$ & $0.004$ & $\mathbf{0.093}$ \\
+Skill half-life scheduler & $0.801 \pm 0.011$ & $0.800$ & $\mathbf{0.001}$ & $0.176$ \\
+Oracle shift-aware scheduler & $\mathbf{0.829 \pm 0.016}$ & $\mathbf{0.829}$ & $0.001$ & $0.000$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.88\linewidth]{half_life_success.png}
+\caption{Goal success across splits. The proposed method helps relative to weak baselines but does not separate from the conformal gate on the hard split.}
+\label{fig:success}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.86\linewidth]{half_life_decay_curves.png}
+\caption{Deployment-age curves on combined micro-shift. Half-life scheduling slows decay but does not produce a decisive main-claim gap.}
+\label{fig:curves}
+\end{figure}
+
+\section{Ablations}
+The ablation result blocks a positive paper. A central claim is that per-skill survival modeling is the mechanism. But removing that component improves goal success from 0.7971 to 0.8046, while also improving half-life error. That suggests the hand-designed per-skill decomposition is not robustly identified by the benchmark.
+
+\begin{table}[h]
+\centering
+\caption{Half-life scheduler ablations on combined micro-shift.}
+\label{tab:ablation}
+\begin{tabular}{lrrrr}
+\toprule
+Ablation & Goal success & Success AUC & Unsafe failure & Half-life error \\
+\midrule
+Full scheduler & $0.797 \pm 0.012$ & $0.796$ & $0.003$ & $0.176$ \\
+Minus per-skill survival & $\mathbf{0.805 \pm 0.018}$ & $\mathbf{0.804}$ & $0.003$ & $\mathbf{0.134}$ \\
+Minus probe updates & $0.784 \pm 0.016$ & $0.784$ & $0.005$ & $0.230$ \\
+Minus hazard margin & $0.751 \pm 0.010$ & $0.751$ & $0.004$ & $0.261$ \\
+Minus shift decomposition & $0.774 \pm 0.015$ & $0.774$ & $\mathbf{0.003}$ & $0.170$ \\
+Fixed global half-life & $0.724 \pm 0.015$ & $0.724$ & $0.009$ & $0.507$ \\
+Threshold-only risk gate & $0.743 \pm 0.022$ & $0.742$ & $0.006$ & $0.205$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.88\linewidth]{half_life_ablation.png}
+\caption{Ablation evidence. Removing the per-skill survival model improves the main success metric, so the proposed mechanism is not submission-safe.}
+\label{fig:ablation}
+\end{figure}
+
+\section{Stress Tests}
+The stress suite varies drift rate, sensor noise, hidden mode flips, probe cost, and combined stress. At maximum combined stress, the half-life scheduler reaches 0.7969 goal success and 0.0007 unsafe failure. The conformal gate reaches 0.7999 goal success and 0.0037 unsafe failure. Again, the half-life model is safer, but not a decisive success improvement.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.88\linewidth]{half_life_stress_sweep.png}
+\caption{Combined stress sweep. The proposed scheduler remains safe, but the conformal risk gate remains competitive.}
+\label{fig:stress}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.86\linewidth]{half_life_failures.png}
+\caption{Unsafe and stale executions on combined micro-shift. Half-life scheduling reduces unsafe execution but the success margin is too small.}
+\label{fig:failures}
+\end{figure}
+
+\section{Why This Is Not Submission-Ready}
+The paper fails the ICLR-main readiness gate for three reasons.
 \begin{itemize}
-\item Planning under Distribution Shifts with Causal POMDPs (2026)
-\item Uncertainty-Calibrated Safety Gating for Vision-Language- Action Manipulation Under Domain Shift: Reliability Gains and Intervention-Efficiency Trade-Offs (2026)
-\item Lost in translation? Skills policy and the shift to skill ecosystems (2012)
-\item Learning and transfer of complex motor skills in virtual reality: a perspective review (2019)
-\item Transformative top-down planning in a small African city: How residents in Bagamoyo, Tanzania connect with a city in motion (2021)
+\item \textbf{No decisive baseline separation.} The paired goal-success difference against the conformal gate is only $0.0025 \pm 0.0272$.
+\item \textbf{Ablation contradiction.} Removing per-skill survival modeling improves success, so the intended mechanism is not validated.
+\item \textbf{Evidence ceiling.} The benchmark is deterministic and reproducible, but it is not real-robot evidence, not a high-fidelity simulator benchmark, and not an accepted external benchmark.
 \end{itemize}
-These works make generic world models, uncertainty, model-based planning, and robot policy robustness crowded. Without real empirical evidence, the remaining novelty boundary is too weak for ICLR main.
 
-\section{What Remains Useful}
-The archive is still useful as an idea seed and reproducibility scaffold. The synthetic code, stress-test CSVs, reviewer attacks, and novelty-boundary docs can inform a future project. The correct next step is not more paper polishing; it is new evidence: implemented models, real baselines, manual related work, and robot or high-fidelity simulator validation.
+\section{Reproducibility}
+Run the benchmark from the repository root:
+\begin{verbatim}
+python src\run_experiment.py
+\end{verbatim}
+The script writes main rollouts, seed-level metrics, pairwise statistics, ablations, stress sweeps, negative cases, summary text, and the figures used in this manuscript. The canonical local PDF is \texttt{C:/Users/wangz/Downloads/83.pdf}.
 
-\section{Terminal Action}
-Decision: \textbf{KILL/ARCHIVE for ICLR main}. Do not submit this paper to ICLR main in the current form. Revival requires a substantially new empirical project.
+\section{Conclusion}
+Skill half-life under shift remains a good research question. The v4 evidence shows that survival-aware scheduling can reduce unsafe stale execution, but it does not beat a strong conformal risk gate decisively, and its core per-skill mechanism fails ablation. The honest terminal action is \textbf{KILL/ARCHIVE}.
 
 \end{document}
