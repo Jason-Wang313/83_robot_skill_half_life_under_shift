@@ -16,3 +16,11 @@
 - Determined that missing real-robot/high-fidelity evidence, template-generated experiments, and unresolved novelty threats are not recoverable from local artifacts.
 - Recompiled the canonical PDF with `Submission-hardening version: v3`.
 - Terminal decision: KILL_ARCHIVE.
+
+## v4 - Skill-Survival Evidence Audit
+- Replaced the template scaffold with a deterministic local skill half-life benchmark.
+- Added eight methods, four skills, five physical-shift splits, ablations, stress sweeps, negative cases, and figures.
+- Main result: half-life scheduler is safe but statistically indistinguishable from conformal risk gating on combined micro-shift.
+- Ablation result: removing per-skill survival improves over the full mechanism.
+- Recompiled the canonical PDF with `Submission-hardening version: v4`.
+- Terminal decision: KILL_ARCHIVE.

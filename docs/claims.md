@@ -1,6 +1,7 @@
 # Claims
 
-- Mechanism claim: Robot skill half life under shift keeps action-critical alternatives explicit until a physical observation collapses them.
-- Evidence claim: the included synthetic experiment tests hidden physical-mode perturbations and compares observed-only, augmented-data, uncertainty, and proposed variants.
-- Scope claim: results support mechanism plausibility, not real-robot deployment.
-- Unsupported claim explicitly avoided: no claim of SOTA robot performance.
+- Mechanism claim tested: robot skill half-life under physical shift can guide execute/probe/refresh/abstain decisions.
+- Evidence claim: the v4 local benchmark tests sequential skill survival over friction, payload, compliance, sensor-noise, and hidden contact-mode shifts.
+- Negative result: the half-life scheduler does not decisively beat conformal risk gating, and removing per-skill survival improves success.
+- Scope claim: results support archive-quality negative evidence, not real-robot deployment.
+- Unsupported claim explicitly avoided: no claim of SOTA robot performance or ICLR-main readiness.

@@ -1,16 +1,34 @@
-Submission-hardening experiment for paper 83 robot_skill_half_life_under_shift
-Seven seeds, 600 episodes per seed, strong baselines, ablations, stress sweep, and negative cases.
-observed_only_behavior_clone hidden_mode_shift mean_success=0.4148 ci95=0.0189 tail=0.5852
-observed_only_behavior_clone combined_stress mean_success=0.3267 ci95=0.0142 tail=0.6733
-data_augmentation_wam hidden_mode_shift mean_success=0.4979 ci95=0.0174 tail=0.5021
-data_augmentation_wam combined_stress mean_success=0.4288 ci95=0.0135 tail=0.5712
-scalar_uncertainty_planner hidden_mode_shift mean_success=0.5583 ci95=0.0140 tail=0.4417
-scalar_uncertainty_planner combined_stress mean_success=0.5179 ci95=0.0177 tail=0.4821
-ensemble_disagreement_planner hidden_mode_shift mean_success=0.5929 ci95=0.0178 tail=0.4071
-ensemble_disagreement_planner combined_stress mean_success=0.5371 ci95=0.0154 tail=0.4629
-conformal_risk_filter hidden_mode_shift mean_success=0.6155 ci95=0.0167 tail=0.3845
-conformal_risk_filter combined_stress mean_success=0.5750 ci95=0.0138 tail=0.4250
-proposed_branch_mechanism hidden_mode_shift mean_success=0.6879 ci95=0.0122 tail=0.3121
-proposed_branch_mechanism combined_stress mean_success=0.6543 ci95=0.0150 tail=0.3457
-oracle_branch_upper_bound hidden_mode_shift mean_success=0.7660 ci95=0.0076 tail=0.2340
-oracle_branch_upper_bound combined_stress mean_success=0.7414 ci95=0.0092 tail=0.2586
+Paper 83 robot_skill_half_life_under_shift v4 rebuild
+Terminal recommendation: KILL_ARCHIVE
+Reason: local skill-survival benchmark added; no robot hardware or external high-fidelity benchmark is available.
+Main rollout rows: 80640
+Ablation rollout rows: 14112
+Stress rollout rows: 201600
+Seeds: [0, 1, 2, 3, 4, 5, 6]
+
+Combined micro-shift:
+frozen_behavior_clone goal_success=0.34474 ci95=0.02299 auc=0.34445 unsafe=0.43006 half_life_error=1.20874
+domain_randomized_clone goal_success=0.36458 ci95=0.01647 auc=0.36411 unsafe=0.39930 half_life_error=0.67806
+fixed_interval_refresh goal_success=0.61260 ci95=0.03246 auc=0.61299 unsafe=0.05159 half_life_error=0.50686
+online_finetune goal_success=0.51091 ci95=0.03197 auc=0.51070 unsafe=0.16518 half_life_error=0.29844
+scalar_uncertainty_gate goal_success=0.73413 ci95=0.02217 auc=0.73320 unsafe=0.01439 half_life_error=0.15263
+conformal_risk_gate goal_success=0.79811 ci95=0.01961 auc=0.79816 unsafe=0.00397 half_life_error=0.09325
+skill_half_life_scheduler goal_success=0.80059 ci95=0.01080 auc=0.80015 unsafe=0.00099 half_life_error=0.17594
+oracle_shift_aware_scheduler goal_success=0.82937 ci95=0.01636 auc=0.82902 unsafe=0.00149 half_life_error=0.00000
+paired goal-success diff vs best baseline conformal_risk_gate=0.00248 ci95=0.02721
+
+Ablations:
+full_skill_half_life_scheduler goal_success=0.79712 ci95=0.01168 auc=0.79642 unsafe=0.00347 hle=0.17594 cost=1.07921
+minus_per_skill_survival goal_success=0.80456 ci95=0.01799 auc=0.80438 unsafe=0.00347 hle=0.13417 cost=1.08316
+minus_probe_updates goal_success=0.78423 ci95=0.01596 auc=0.78397 unsafe=0.00496 hle=0.23005 cost=1.04600
+minus_hazard_margin goal_success=0.75050 ci95=0.00990 auc=0.75062 unsafe=0.00397 hle=0.26089 cost=1.07405
+minus_shift_decomposition goal_success=0.77431 ci95=0.01514 auc=0.77377 unsafe=0.00297 hle=0.16988 cost=1.07857
+fixed_global_half_life goal_success=0.72420 ci95=0.01499 auc=0.72424 unsafe=0.00942 hle=0.50686 cost=1.07606
+threshold_only_risk_gate goal_success=0.74256 ci95=0.02245 auc=0.74241 unsafe=0.00595 hle=0.20498 cost=1.05084
+
+Combined stress level 1.0:
+domain_randomized_clone goal_success=0.39434 ci95=0.01778 unsafe=0.35863 hle=0.80675 cost=1.30484
+conformal_risk_gate goal_success=0.79985 ci95=0.01953 unsafe=0.00372 hle=0.12369 cost=1.12692
+online_finetune goal_success=0.60640 ci95=0.03507 unsafe=0.05804 hle=0.35309 cost=1.05823
+skill_half_life_scheduler goal_success=0.79688 ci95=0.02747 unsafe=0.00074 hle=0.21718 cost=1.13860
+oracle_shift_aware_scheduler goal_success=0.81920 ci95=0.01439 unsafe=0.00149 hle=0.00000 cost=1.14505
