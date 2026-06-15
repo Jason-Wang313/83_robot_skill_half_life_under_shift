@@ -21,6 +21,8 @@ Robot skills often fail gradually rather than catastrophically: a manipulation p
 \section{Terminal Decision}
 \textbf{Decision: KILL/ARCHIVE for ICLR main.} The repository now contains a paper-specific benchmark, baselines, ablations, stress tests, figures, and reproducibility files. The result still fails the submission gate because the proposed method is statistically indistinguishable from a strong conformal gate, and a central ablation improves over the full mechanism. This should be archived as a negative result rather than polished into an overstated submission.
 
+All reported CSV-backed results were regenerated from source on 2026-06-15. The rerun reproduced the same terminal outcome: \textbf{KILL/ARCHIVE}.
+
 \section{Problem}
 The intended claim was:
 \begin{quote}
@@ -55,8 +57,10 @@ We compare the proposed scheduler against seven alternatives:
 \section{Main Results}
 Table~\ref{tab:main} gives the combined micro-shift split. The half-life scheduler clearly beats frozen, domain-randomized, fixed-refresh, online-fine-tuning, and scalar-uncertainty baselines. That is the useful part of the archive. It does not, however, produce a decisive gain over conformal risk gating.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
+\small
+\setlength{\tabcolsep}{3pt}
 \caption{Combined micro-shift results over seven seeds. Confidence intervals are 95\% intervals over seed means.}
 \label{tab:main}
 \begin{tabular}{lrrrr}
@@ -75,14 +79,14 @@ Oracle shift-aware scheduler & $\mathbf{0.829 \pm 0.016}$ & $\mathbf{0.829}$ & $
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=0.88\linewidth]{half_life_success.png}
 \caption{Goal success across splits. The proposed method helps relative to weak baselines but does not separate from the conformal gate on the hard split.}
 \label{fig:success}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=0.86\linewidth]{half_life_decay_curves.png}
 \caption{Deployment-age curves on combined micro-shift. Half-life scheduling slows decay but does not produce a decisive main-claim gap.}
@@ -92,8 +96,10 @@ Oracle shift-aware scheduler & $\mathbf{0.829 \pm 0.016}$ & $\mathbf{0.829}$ & $
 \section{Ablations}
 The ablation result blocks a positive paper. A central claim is that per-skill survival modeling is the mechanism. But removing that component improves goal success from 0.7971 to 0.8046, while also improving half-life error. That suggests the hand-designed per-skill decomposition is not robustly identified by the benchmark.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
+\small
+\setlength{\tabcolsep}{3pt}
 \caption{Half-life scheduler ablations on combined micro-shift.}
 \label{tab:ablation}
 \begin{tabular}{lrrrr}
@@ -111,7 +117,7 @@ Threshold-only risk gate & $0.743 \pm 0.022$ & $0.742$ & $0.006$ & $0.205$ \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=0.88\linewidth]{half_life_ablation.png}
 \caption{Ablation evidence. Removing the per-skill survival model improves the main success metric, so the proposed mechanism is not submission-safe.}
@@ -121,14 +127,14 @@ Threshold-only risk gate & $0.743 \pm 0.022$ & $0.742$ & $0.006$ & $0.205$ \\
 \section{Stress Tests}
 The stress suite varies drift rate, sensor noise, hidden mode flips, probe cost, and combined stress. At maximum combined stress, the half-life scheduler reaches 0.7969 goal success and 0.0007 unsafe failure. The conformal gate reaches 0.7999 goal success and 0.0037 unsafe failure. Again, the half-life model is safer, but not a decisive success improvement.
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=0.88\linewidth]{half_life_stress_sweep.png}
 \caption{Combined stress sweep. The proposed scheduler remains safe, but the conformal risk gate remains competitive.}
 \label{fig:stress}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=0.86\linewidth]{half_life_failures.png}
 \caption{Unsafe and stale executions on combined micro-shift. Half-life scheduling reduces unsafe execution but the success margin is too small.}
@@ -148,7 +154,7 @@ Run the benchmark from the repository root:
 \begin{verbatim}
 python src\run_experiment.py
 \end{verbatim}
-The script writes main rollouts, seed-level metrics, pairwise statistics, ablations, stress sweeps, negative cases, summary text, and the figures used in this manuscript. The canonical local PDF is \texttt{C:/Users/wangz/Downloads/83.pdf}.
+The script writes main rollouts, seed-level metrics, pairwise statistics, ablations, stress sweeps, negative cases, summary text, and the figures used in this manuscript. The 2026-06-15 audit verified 80,640 main rollout rows, 14,112 ablation rollout rows, 201,600 stress rollout rows, and seven seeds. The canonical local PDF is \texttt{C:/Users/wangz/Downloads/83.pdf}.
 
 \section{Conclusion}
 Skill half-life under shift remains a good research question. The v4 evidence shows that survival-aware scheduling can reduce unsafe stale execution, but it does not beat a strong conformal risk gate decisively, and its core per-skill mechanism fails ablation. The honest terminal action is \textbf{KILL/ARCHIVE}.

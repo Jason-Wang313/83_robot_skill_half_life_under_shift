@@ -13,7 +13,7 @@
 - Physical interface dynamics alter how robotic exosuits augment human movement: implications for optimizing wearable assistive devices (2017)
 
         ## ICLR Main Response
-        A hostile ICLR reviewer would be correct to reject this as a main-conference submission. The v2 paper has reproducible synthetic evidence and careful limitations, but it does not contain the real robot, high-fidelity simulator, learned model, or manual related-work depth needed for the ICLR main track.
+        A hostile ICLR reviewer would be correct to reject this as a main-conference submission. The v4 paper has reproducible synthetic evidence and careful limitations, but it does not contain the real robot, high-fidelity simulator, learned model, or manual related-work depth needed for the ICLR main track. The 2026-06-15 rerun also confirms that the proposed scheduler is not decisively better than conformal risk gating and that removing per-skill survival improves the mechanism ablation.
 
         ## Honest Action
         The paper is marked `KILL_ARCHIVE`. This avoids converting a generated workshop-style idea into an overstated main-conference claim.
