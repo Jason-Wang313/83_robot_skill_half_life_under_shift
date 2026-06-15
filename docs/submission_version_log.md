@@ -24,3 +24,9 @@
 - Ablation result: removing per-skill survival improves over the full mechanism.
 - Recompiled the canonical PDF with `Submission-hardening version: v4`.
 - Terminal decision: KILL_ARCHIVE.
+
+## v4.1 - 2026-06-15 Rerun Audit
+- Added the paper-specific ICLR-main execution plan before running any new evidence.
+- Re-ran `python src\run_experiment.py` from source and reproduced `terminal=KILL_ARCHIVE`.
+- Verified 80,640 main rollouts, 14,112 ablation rollouts, 201,600 stress rollouts, seven seeds, eight methods, seven ablations, five stress axes, and four negative cases.
+- Preserved the terminal decision because the paired gain over conformal risk gating remains negligible and the central ablation remains contradictory.

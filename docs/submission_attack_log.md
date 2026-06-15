@@ -192,3 +192,17 @@ Attack: No meaningful recoverable ICLR-main issue remains after archiving.
 Verdict: Terminal condition reached.
 
 Action: Mark KILL_ARCHIVE and stop.
+
+## ICLR Main Gate Round 28
+Attack: A fresh rerun might reveal that the earlier negative result was stale or accidental.
+
+Verdict: Rejected. The 2026-06-15 rerun reproduced the same terminal outcome: 80,640 main rollouts, 14,112 ablation rollouts, 201,600 stress rollouts, and `terminal=KILL_ARCHIVE`.
+
+Action: Preserve `KILL_ARCHIVE`.
+
+## ICLR Main Gate Round 29
+Attack: The method may still be acceptable because it is safer than the conformal gate.
+
+Verdict: Insufficient for ICLR main. The method is safer on unsafe failure (`0.00099` vs `0.00397`) but does not produce decisive success separation (`0.00248 +/- 0.02721` paired goal-success difference), and the mechanism ablation contradicts the central claim.
+
+Action: State the safety observation as a useful negative-result signal, not as a submission-ready claim.
