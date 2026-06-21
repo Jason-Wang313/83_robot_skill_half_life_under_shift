@@ -1,34 +1,95 @@
-Paper 83 robot_skill_half_life_under_shift v4 rebuild
+Paper 83 robot_skill_half_life_under_shift v5 expanded rebuild
 Terminal recommendation: KILL_ARCHIVE
-Reason: local skill-survival benchmark added; no robot hardware or external high-fidelity benchmark is available.
-Main rollout rows: 80640
-Ablation rollout rows: 14112
-Stress rollout rows: 201600
-Seeds: [0, 1, 2, 3, 4, 5, 6]
+Reason: CPU-only local skill-survival benchmark expanded with theory hooks, hard aggregate, ablations, stress, fixed-risk deployment, and negative cases; no robot hardware or external high-fidelity benchmark is present.
+Main rollout rows: 307200
+Dataset rows: 25600
+Ablation rollout rows: 64000
+Stress rollout rows: 392000
+Fixed-risk rollout rows: 96000
+Negative cases: 24
+Seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-Combined micro-shift:
-frozen_behavior_clone goal_success=0.34474 ci95=0.02299 auc=0.34445 unsafe=0.43006 half_life_error=1.20874
-domain_randomized_clone goal_success=0.36458 ci95=0.01647 auc=0.36411 unsafe=0.39930 half_life_error=0.67806
-fixed_interval_refresh goal_success=0.61260 ci95=0.03246 auc=0.61299 unsafe=0.05159 half_life_error=0.50686
-online_finetune goal_success=0.51091 ci95=0.03197 auc=0.51070 unsafe=0.16518 half_life_error=0.29844
-scalar_uncertainty_gate goal_success=0.73413 ci95=0.02217 auc=0.73320 unsafe=0.01439 half_life_error=0.15263
-conformal_risk_gate goal_success=0.79811 ci95=0.01961 auc=0.79816 unsafe=0.00397 half_life_error=0.09325
-skill_half_life_scheduler goal_success=0.80059 ci95=0.01080 auc=0.80015 unsafe=0.00099 half_life_error=0.17594
-oracle_shift_aware_scheduler goal_success=0.82937 ci95=0.01636 auc=0.82902 unsafe=0.00149 half_life_error=0.00000
-paired goal-success diff vs best baseline conformal_risk_gate=0.00248 ci95=0.02721
+Hard-regime aggregate goal success:
+frozen_behavior_clone goal_success=0.36482 ci95=0.00710 late=0.15286 unsafe=0.37201 stale=0.72536 safety_utility=-0.25344
+domain_randomized_clone goal_success=0.40947 ci95=0.00612 late=0.18839 unsafe=0.31438 stale=0.72536 safety_utility=-0.15122
+fixed_interval_refresh goal_success=0.66299 ci95=0.00584 late=0.61464 unsafe=0.03576 stale=0.14942 safety_utility=0.57476
+online_finetune goal_success=0.54089 ci95=0.00629 late=0.41607 unsafe=0.13987 stale=0.50964 safety_utility=0.22641
+scalar_uncertainty_gate goal_success=0.75857 ci95=0.00405 late=0.74375 unsafe=0.00750 stale=0.00000 safety_utility=0.74272
+conformal_risk_gate goal_success=0.79924 ci95=0.00701 late=0.78072 unsafe=0.00344 stale=0.00000 safety_utility=0.78390
+ensemble_uncertainty_gate goal_success=0.80313 ci95=0.00321 late=0.79411 unsafe=0.00263 stale=0.00000 safety_utility=0.78833
+hazard_regression_refresh goal_success=0.78545 ci95=0.00446 late=0.77697 unsafe=0.00527 stale=0.00000 safety_utility=0.77528
+bayesian_skill_survival goal_success=0.82143 ci95=0.00351 late=0.81661 unsafe=0.00210 stale=0.00000 safety_utility=0.80596
+cvar_lifetime_guard goal_success=0.82821 ci95=0.00378 late=0.83286 unsafe=0.00156 stale=0.00000 safety_utility=0.80829
+skill_half_life_scheduler_v5 goal_success=0.81638 ci95=0.00326 late=0.80750 unsafe=0.00281 stale=0.00000 safety_utility=0.80158
+oracle_shift_aware_scheduler goal_success=0.83594 ci95=0.00407 late=0.83411 unsafe=0.00161 stale=0.00000 safety_utility=0.82153
 
-Ablations:
-full_skill_half_life_scheduler goal_success=0.79712 ci95=0.01168 auc=0.79642 unsafe=0.00347 hle=0.17594 cost=1.07921
-minus_per_skill_survival goal_success=0.80456 ci95=0.01799 auc=0.80438 unsafe=0.00347 hle=0.13417 cost=1.08316
-minus_probe_updates goal_success=0.78423 ci95=0.01596 auc=0.78397 unsafe=0.00496 hle=0.23005 cost=1.04600
-minus_hazard_margin goal_success=0.75050 ci95=0.00990 auc=0.75062 unsafe=0.00397 hle=0.26089 cost=1.07405
-minus_shift_decomposition goal_success=0.77431 ci95=0.01514 auc=0.77377 unsafe=0.00297 hle=0.16988 cost=1.07857
-fixed_global_half_life goal_success=0.72420 ci95=0.01499 auc=0.72424 unsafe=0.00942 hle=0.50686 cost=1.07606
-threshold_only_risk_gate goal_success=0.74256 ci95=0.02245 auc=0.74241 unsafe=0.00595 hle=0.20498 cost=1.05084
+Decision gates:
+best_reference: cvar_lifetime_guard
+best_reference_success: 0.82821
+proposed_hard_success: 0.81638
+hard_margin: -0.011830000000000007
+paired_lower95_vs_best: -0.01528
+safety_reference: cvar_lifetime_guard
+safety_reference_sum: 0.00156
+proposed_safety_sum: 0.00281
+margin_gate: False
+paired_gate: False
+safety_gate: True
+ablation_gate: False
+fixed_risk_gate: False
+stress_gate: False
 
-Combined stress level 1.0:
-domain_randomized_clone goal_success=0.39434 ci95=0.01778 unsafe=0.35863 hle=0.80675 cost=1.30484
-conformal_risk_gate goal_success=0.79985 ci95=0.01953 unsafe=0.00372 hle=0.12369 cost=1.12692
-online_finetune goal_success=0.60640 ci95=0.03507 unsafe=0.05804 hle=0.35309 cost=1.05823
-skill_half_life_scheduler goal_success=0.79688 ci95=0.02747 unsafe=0.00074 hle=0.21718 cost=1.13860
-oracle_shift_aware_scheduler goal_success=0.81920 ci95=0.01439 unsafe=0.00149 hle=0.00000 cost=1.14505
+Pairwise hard aggregate versus strongest non-oracle:
+goal_success diff=-0.01183 ci95=0.00345 lower95=-0.01528 better_seeds=0/10
+late_success diff=-0.02535 ci95=0.00707 lower95=-0.03243 better_seeds=0/10
+unsafe_failure diff=0.00125 ci95=0.00066 lower95=0.00059 better_seeds=0/10
+stale_execution diff=0.00000 ci95=0.00000 lower95=0.00000 better_seeds=0/10
+total_cost diff=-0.04441 ci95=0.00080 lower95=-0.04521 better_seeds=10/10
+half_life_error diff=0.03993 ci95=0.00225 lower95=0.03769 better_seeds=0/10
+calibration_error diff=0.00740 ci95=0.00217 lower95=0.00523 better_seeds=0/10
+safety_utility diff=-0.00671 ci95=0.00370 lower95=-0.01041 better_seeds=1/10
+
+Ablation results:
+combined_micro_shift full_skill_half_life_scheduler_v5 goal_success=0.82062 ci95=0.01167 unsafe=0.00219 stale=0.00000 hle=0.12375 cost=1.09731 safety_utility=0.80508
+combined_micro_shift minus_per_skill_survival goal_success=0.81344 ci95=0.01782 unsafe=0.00219 stale=0.00000 hle=0.13403 cost=1.10020 safety_utility=0.79748
+combined_micro_shift minus_probe_updates goal_success=0.81000 ci95=0.01842 unsafe=0.00406 stale=0.00000 hle=0.18897 cost=1.05090 safety_utility=0.79930
+combined_micro_shift minus_hazard_margin goal_success=0.75094 ci95=0.01307 unsafe=0.00781 stale=0.00000 hle=0.20780 cost=1.09782 safety_utility=0.73037
+combined_micro_shift minus_shift_decomposition goal_success=0.80656 ci95=0.01293 unsafe=0.00438 stale=0.00000 hle=0.10556 cost=1.09937 safety_utility=0.78880
+combined_micro_shift minus_uncertainty_calibration goal_success=0.80875 ci95=0.01862 unsafe=0.00063 stale=0.00000 hle=0.16801 cost=1.09467 safety_utility=0.79495
+combined_micro_shift minus_skill_age_state goal_success=0.79781 ci95=0.01184 unsafe=0.00375 stale=0.00000 hle=0.12375 cost=1.09864 safety_utility=0.78070
+combined_micro_shift fixed_global_half_life goal_success=0.73906 ci95=0.02209 unsafe=0.00563 stale=0.00937 hle=0.53469 cost=1.09195 safety_utility=0.71805
+combined_micro_shift threshold_only_risk_gate goal_success=0.76906 ci95=0.01334 unsafe=0.00531 stale=0.00000 hle=0.15251 cost=1.05932 safety_utility=0.75608
+combined_micro_shift expected_success_only goal_success=0.73281 ci95=0.01453 unsafe=0.00875 stale=0.00000 hle=0.15852 cost=1.06122 safety_utility=0.71654
+contact_mode_chatter full_skill_half_life_scheduler_v5 goal_success=0.81000 ci95=0.01268 unsafe=0.00313 stale=0.00000 hle=0.10837 cost=1.08606 safety_utility=0.79520
+contact_mode_chatter minus_per_skill_survival goal_success=0.82656 ci95=0.01018 unsafe=0.00125 stale=0.00000 hle=0.13889 cost=1.08740 safety_utility=0.81323
+contact_mode_chatter minus_probe_updates goal_success=0.80906 ci95=0.01043 unsafe=0.00438 stale=0.00000 hle=0.17928 cost=1.04418 safety_utility=0.79903
+contact_mode_chatter minus_hazard_margin goal_success=0.76500 ci95=0.01782 unsafe=0.00594 stale=0.00000 hle=0.18587 cost=1.08545 safety_utility=0.74781
+contact_mode_chatter minus_shift_decomposition goal_success=0.81844 ci95=0.01353 unsafe=0.00313 stale=0.00000 hle=0.09280 cost=1.08688 safety_utility=0.80352
+contact_mode_chatter minus_uncertainty_calibration goal_success=0.80438 ci95=0.01282 unsafe=0.00250 stale=0.00000 hle=0.14796 cost=1.08388 safety_utility=0.79043
+contact_mode_chatter minus_skill_age_state goal_success=0.82875 ci95=0.01491 unsafe=0.00282 stale=0.00000 hle=0.10837 cost=1.08579 safety_utility=0.81427
+contact_mode_chatter fixed_global_half_life goal_success=0.76125 ci95=0.01550 unsafe=0.00531 stale=0.00469 hle=0.35339 cost=1.08342 safety_utility=0.74330
+contact_mode_chatter threshold_only_risk_gate goal_success=0.76813 ci95=0.01656 unsafe=0.00625 stale=0.00000 hle=0.13104 cost=1.05336 safety_utility=0.75516
+contact_mode_chatter expected_success_only goal_success=0.77843 ci95=0.00798 unsafe=0.00812 stale=0.00000 hle=0.13921 cost=1.05385 safety_utility=0.76375
+
+Combined stress level 1.50:
+domain_randomized_clone goal_success=0.39750 ci95=0.02282 unsafe=0.37750 stale=0.66375 hle=0.87504 safety_utility=-0.20530
+conformal_risk_gate goal_success=0.81250 ci95=0.01528 unsafe=0.00313 stale=0.00000 hle=0.11627 safety_utility=0.77762
+ensemble_uncertainty_gate goal_success=0.81000 ci95=0.01186 unsafe=0.00250 stale=0.00000 hle=0.12445 safety_utility=0.77617
+bayesian_skill_survival goal_success=0.83875 ci95=0.01778 unsafe=0.00063 stale=0.00000 hle=0.20968 safety_utility=0.80450
+cvar_lifetime_guard goal_success=0.82188 ci95=0.01320 unsafe=0.00125 stale=0.00000 hle=0.15451 safety_utility=0.78441
+skill_half_life_scheduler_v5 goal_success=0.79187 ci95=0.01836 unsafe=0.00688 stale=0.00000 hle=0.16687 safety_utility=0.75629
+oracle_shift_aware_scheduler goal_success=0.82625 ci95=0.00980 unsafe=0.00063 stale=0.00000 hle=0.00000 safety_utility=0.79672
+
+Fixed-risk budget 0.05:
+combined_micro_shift conformal_risk_gate coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+combined_micro_shift ensemble_uncertainty_gate coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+combined_micro_shift bayesian_skill_survival coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+combined_micro_shift cvar_lifetime_guard coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+combined_micro_shift skill_half_life_scheduler_v5 coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+combined_micro_shift oracle_shift_aware_scheduler coverage=0.02700 fixed_risk_success=0.02500 executed_success=0.92976 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+contact_mode_chatter conformal_risk_gate coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+contact_mode_chatter ensemble_uncertainty_gate coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+contact_mode_chatter bayesian_skill_survival coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+contact_mode_chatter cvar_lifetime_guard coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+contact_mode_chatter skill_half_life_scheduler_v5 coverage=0.00000 fixed_risk_success=0.00000 executed_success=0.00000 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000
+contact_mode_chatter oracle_shift_aware_scheduler coverage=0.03450 fixed_risk_success=0.03150 executed_success=0.91794 false_safe_rate=0.00000 unsafe=0.00000 stale=0.00000

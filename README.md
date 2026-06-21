@@ -1,50 +1,44 @@
 # 83 Robot Skill Half-Life Under Shift
 
-Submission-hardening version: v4
+Submission-hardening version: v5 expanded audit
 
 Terminal decision: **KILL_ARCHIVE** for ICLR main conference.
 
-Latest audit rerun: 2026-06-15.
+Latest audit rerun: 2026-06-21.
 
 This repository contains a reproducible local evidence audit for the research bet:
 
 > Quantify how quickly robot skills decay under small physical environment shifts.
 
-The v4 rebuild replaces the template scaffold with a deterministic skill-survival benchmark covering four skills, five physical-shift splits, eight methods, ablations, stress sweeps, and negative cases.
+The v5 rebuild expands the archive into a deterministic skill-survival benchmark covering five skills, eight physical-shift splits, 12 methods, hard-regime aggregation, two-split ablations, five-axis stress sweeps, fixed-risk deployment, and retained negative cases.
 
 ## Why This Is Archived
 
-- The 2026-06-15 rerun regenerated 80,640 main rollouts, 14,112 ablation rollouts, and 201,600 stress rollouts.
-- On the combined micro-shift split, `skill_half_life_scheduler` reaches `0.80059 +/- 0.01080` goal success.
-- The strongest non-oracle baseline, `conformal_risk_gate`, reaches `0.79811 +/- 0.01961`.
-- The paired goal-success difference versus the conformal gate is only `0.00248 +/- 0.02721`.
-- The `minus_per_skill_survival` ablation improves goal success to `0.80456 +/- 0.01799`, contradicting the central mechanism claim.
-- The evidence is local and synthetic, not hardware or high-fidelity simulator validation.
+- The 2026-06-21 rerun regenerated 307,200 main rollouts, 25,600 physical-state rows, 64,000 ablation rollouts, 392,000 stress rollouts, 96,000 fixed-risk rollouts, and 24 negative cases.
+- On the predefined hard-regime aggregate, `skill_half_life_scheduler_v5` reaches `0.81638 +/- 0.00326` goal success.
+- The strongest non-oracle baseline, `cvar_lifetime_guard`, reaches `0.82821 +/- 0.00378`.
+- The paired hard-aggregate goal-success difference versus `cvar_lifetime_guard` is `-0.01183 +/- 0.00345`, with lower95 `-0.01528`.
+- The method fails the margin, paired, ablation, fixed-risk, and maximum-stress gates.
+- At fixed-risk budget `0.05`, all non-oracle methods have zero coverage on both fixed-risk splits.
+- The evidence is local and synthetic, not robot hardware or recognized high-fidelity simulator validation.
 
 ## Reproduce
 
 ```powershell
 python src\run_experiment.py
-```
-
-The runner writes:
-
-- `results/rollouts.csv`
-- `results/raw_seed_metrics.csv`
-- `results/metrics.csv`
-- `results/pairwise_stats.csv`
-- `results/ablation_metrics.csv`
-- `results/stress_sweep.csv`
-- `results/negative_cases.csv`
-- `results/summary.txt`
-- `figures/half_life_*.png`
-
-## Rebuild PDF
-
-```powershell
+python scripts\generate_manuscript.py
 cd paper
 pdflatex -interaction=nonstopmode -halt-on-error main.tex
+bibtex main
 pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+python ..\scripts\validate_submission_artifacts.py
 ```
 
+The runner writes the complete CSV suite under `results/`, figures under `figures/`, and a 25+ page ICLR-style audit manuscript under `paper/`.
+
 Canonical local PDF: `C:/Users/wangz/Downloads/83.pdf`
+
+Validated PDF: 62 pages, SHA256 `33F4831CA807F4D47A799726E3E34CAE97CBEBD7DBFB63EC096965A663524628`.
+
+No PDF should be copied to the visible Desktop.
