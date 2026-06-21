@@ -1,5 +1,25 @@
-case,expected_behavior,observed_outcome,lesson
-unseen_hardware_damage,half-life estimate should collapse and trigger abstention,still unsafe if the damage has no sensor signature,skill half-life is not a substitute for hardware health monitoring
-goal_semantics_changed,physical probes should not claim semantic recovery,scheduler preserves physical safety but cannot infer a new goal,instruction-grounding shift is outside the mechanism
-adversarially_biased_sensor,conformal and half-life gates should become conservative,hidden bias delays refresh decisions,sensor calibration audits must be separate from skill survival estimates
-rapid_contact_mode_chatter,half-life should shorten under repeated flips,probe cost can dominate before enough evidence accumulates,the scheduler needs an explicit chatter detector for deployment
+source,split,seed,step,skill,method,failure_label,goal_success,unsafe_failure,stale_execution,risk_upper,estimated_half_life,true_half_life,exec_age,lesson
+strong_baseline_success,nominal_slow_drift,0,0,pick_place,conformal_risk_gate,success,1,0,0,0.12761,25.74379,26.18615,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,pick_place,bayesian_skill_survival,success,1,0,0,0.11409,23.76345,26.18615,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,pick_place,cvar_lifetime_guard,success,1,0,0,0.18313,26.12284,26.18615,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+v5_main_failure,nominal_slow_drift,0,0,pick_place,skill_half_life_scheduler_v5,unrecovered_shift,0,0,0,0.10769,25.37657,26.18615,0.00000,physical shift reduced success without triggering a useful refresh or probe
+strong_baseline_success,nominal_slow_drift,0,0,door_pull,conformal_risk_gate,success,1,0,0,0.14261,19.58719,21.09665,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,door_pull,bayesian_skill_survival,success,1,0,0,0.12909,18.48016,21.09665,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,door_pull,cvar_lifetime_guard,success,1,0,0,0.19813,20.27859,21.09665,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+v5_main_failure,nominal_slow_drift,0,1,door_pull,skill_half_life_scheduler_v5,unrecovered_shift,0,0,0,0.13445,20.27754,19.84291,1.00000,physical shift reduced success without triggering a useful refresh or probe
+strong_baseline_success,nominal_slow_drift,0,0,drawer_slide,conformal_risk_gate,success,1,0,0,0.14917,19.73935,21.10577,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,drawer_slide,bayesian_skill_survival,success,1,0,0,0.13565,17.72698,21.10577,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,drawer_slide,cvar_lifetime_guard,success,1,0,0,0.20469,19.74997,21.10577,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+v5_main_failure,nominal_slow_drift,0,0,drawer_slide,skill_half_life_scheduler_v5,unrecovered_shift,0,0,0,0.13045,19.81611,21.10577,0.00000,physical shift reduced success without triggering a useful refresh or probe
+strong_baseline_success,nominal_slow_drift,0,0,peg_insert,conformal_risk_gate,success,1,0,0,0.14365,16.72619,17.47068,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,peg_insert,bayesian_skill_survival,success,1,0,0,0.13013,15.90121,17.47068,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,peg_insert,cvar_lifetime_guard,success,1,0,0,0.19917,15.64677,17.47068,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+v5_main_failure,nominal_slow_drift,0,4,peg_insert,skill_half_life_scheduler_v5,unrecovered_shift,0,0,0,0.18158,18.77672,17.98908,3.82000,physical shift reduced success without triggering a useful refresh or probe
+strong_baseline_success,nominal_slow_drift,0,2,cable_route,conformal_risk_gate,success,1,0,0,0.17447,18.85590,18.79303,2.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,cable_route,bayesian_skill_survival,success,1,0,0,0.12611,16.65165,18.79587,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+strong_baseline_success,nominal_slow_drift,0,0,cable_route,cvar_lifetime_guard,success,1,0,0,0.19515,18.05355,18.79587,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism
+v5_main_failure,nominal_slow_drift,0,0,cable_route,skill_half_life_scheduler_v5,unrecovered_shift,0,0,0,0.11941,18.76480,18.79587,0.00000,physical shift reduced success without triggering a useful refresh or probe
+v5_main_failure,nominal_slow_drift,0,54,cable_route,skill_half_life_scheduler_v5,unsafe_stale_execution,0,1,0,0.21306,18.91281,16.00208,5.46000,skill age crossed the latent survival boundary before the policy refreshed
+v5_main_failure,nominal_slow_drift,6,36,peg_insert,skill_half_life_scheduler_v5,unsafe_stale_execution,0,1,0,0.19147,17.27085,15.96053,3.82000,skill age crossed the latent survival boundary before the policy refreshed
+v5_main_failure,nominal_slow_drift,9,8,drawer_slide,skill_half_life_scheduler_v5,unsafe_stale_execution,0,1,0,0.21040,23.15815,23.28553,7.46000,skill age crossed the latent survival boundary before the policy refreshed
+strong_baseline_success,friction_shift,0,0,pick_place,conformal_risk_gate,success,1,0,0,0.15058,21.26870,22.04894,0.00000,counterexample where a baseline or ablation succeeds despite the full mechanism

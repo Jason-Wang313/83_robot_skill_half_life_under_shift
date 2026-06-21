@@ -30,3 +30,11 @@
 - Re-ran `python src\run_experiment.py` from source and reproduced `terminal=KILL_ARCHIVE`.
 - Verified 80,640 main rollouts, 14,112 ablation rollouts, 201,600 stress rollouts, seven seeds, eight methods, seven ablations, five stress axes, and four negative cases.
 - Preserved the terminal decision because the paired gain over conformal risk gating remains negligible and the central ablation remains contradictory.
+
+## v5 - 2026-06-21 Expanded Submission-Readiness Audit
+- Froze `docs/paper83_expanded_submission_plan_20260621.md` before editing or running the new protocol.
+- Expanded the benchmark to 10 seeds, five skills, eight shifts, 12 methods, 307,200 main rollouts, and 25,600 physical-state rows.
+- Added hard-regime aggregate metrics, paired hard-regime statistics, two-split ablations, five-axis stress sweeps, fixed-risk deployment, and 24 negative cases.
+- Generated a 62-page ICLR-style manuscript with bright boxed clickable citations and evidence appendices.
+- Validated `C:/Users/wangz/Downloads/83.pdf` with SHA256 `33F4831CA807F4D47A799726E3E34CAE97CBEBD7DBFB63EC096965A663524628`; Desktop PDF absent.
+- Terminal decision: KILL_ARCHIVE because `skill_half_life_scheduler_v5` loses to `cvar_lifetime_guard` on the hard aggregate and fails margin, paired, ablation, fixed-risk, and stress gates.
